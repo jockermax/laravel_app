@@ -1,3 +1,11 @@
+import * as bootstrap from "bootstrap";
+import { createPopper } from "@popperjs/core";
+import jQuery from "jquery";
+
+window.createPopper = createPopper;
+window.bootstrap = bootstrap;
+window.$ = jQuery;
+
 window._ = require('lodash');
 
 try {

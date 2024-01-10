@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,10 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $userId = Auth::id();
+        return view('home', ['userID' => $userId]);
     }
 
-     /**
+    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -35,4 +36,5 @@ class HomeController extends Controller
     {
         return view('adminHome');
     }
+
 }
