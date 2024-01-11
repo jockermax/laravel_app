@@ -1,7 +1,10 @@
 import './bootstrap';
-import { getData, validateUserInformation, submitFeedback, submitDocument, getFormationList, appendFormation } from './function';
+import { getData, validateUserInformation, submitFeedback, submitDocument, getFormationList, appendFormation, displaySelectedFormation } from './function';
 (async function () {
-    await getFormationList().then(response => appendFormation(response)).catch(error => console.error(error));
+    await getFormationList().then(async function (response) {
+        await appendFormation(response);
+        await displaySelectedFormation();
+    }).catch(error => console.error(error));
 })();
 /*
 getData();

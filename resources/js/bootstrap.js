@@ -1,4 +1,5 @@
 import * as bootstrap from "bootstrap";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { createPopper } from "@popperjs/core";
 import jQuery from "jquery";
 

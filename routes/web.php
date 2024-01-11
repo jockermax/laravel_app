@@ -49,7 +49,7 @@ Route::get('get-list-formation/', function () {
         'nom_formation',
         'cout_formation',
         DB::raw("
-            (CASE 
+            (CASE
                 WHEN periode_cycles_id = 7 THEN 'LICENCE 1'
                 WHEN periode_cycles_id = 8 THEN 'LICENCE 2'
                 WHEN periode_cycles_id = 9 THEN 'LICENCE 3'
@@ -60,7 +60,7 @@ Route::get('get-list-formation/', function () {
             END) AS cycle
         "),
         DB::raw("
-            (CASE 
+            (CASE
                 WHEN departements_id = 1 THEN 'Genie-Informatique'
                 WHEN departements_id = 2 THEN 'Reseaux & systemes'
                 ELSE 'AUTRE'
@@ -70,3 +70,20 @@ Route::get('get-list-formation/', function () {
     return  response()->json($records, JSON_UNESCAPED_UNICODE);
 });
 
+Route::post('add-formation/{user}/{formation}', function ($user ,$formation) {
+    $formation_validated =  $validate_formations->create($request -> validated());
+    if ($formation_validated) {
+        return response()->json(['success'=> true, 'id' => $formation_validated-> id]);
+    } else {
+        return response()->json(['success'=> false]);
+    }
+});
+
+Route::delete('delete-formation/{user}/{id}', function ($id, $user) {
+    $deleted_success = $deleted_validate_formations->where(['id' => $id], ['user', $user])->delete();
+    if ($deleted_success) {
+        return response()->json(['success'=> true]);
+    } else {
+        return response()->json(['success'=> false]);
+    }
+});

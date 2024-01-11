@@ -53,7 +53,7 @@ class DocumentController extends Controller
     }
 }
 
-    
+
 
 
    /* public function download($id)
@@ -67,4 +67,3 @@ class DocumentController extends Controller
         return response()->download($path, $document->filename, $headers);
     } */
 }
- 
