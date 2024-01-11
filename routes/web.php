@@ -43,3 +43,30 @@ Route::post('submit-feedback/{user}', function (App\Http\Requests\FeedBackReques
     }
 });
 
+Route::get('get-list-formation/', function () {
+    $records = DB::table('formations')->select(
+        'id',
+        'nom_formation',
+        'cout_formation',
+        DB::raw("
+            (CASE 
+                WHEN periode_cycles_id = 7 THEN 'LICENCE 1'
+                WHEN periode_cycles_id = 8 THEN 'LICENCE 2'
+                WHEN periode_cycles_id = 9 THEN 'LICENCE 3'
+                WHEN periode_cycles_id = 10 THEN 'MASTER 1'
+                WHEN periode_cycles_id = 11 THEN 'MASTER 2'
+                WHEN periode_cycles_id = 12 THEN 'INGENIEUR'
+                ELSE 'AUTRE'
+            END) AS cycle
+        "),
+        DB::raw("
+            (CASE 
+                WHEN departements_id = 1 THEN 'Genie-Informatique'
+                WHEN departements_id = 2 THEN 'Reseaux & systemes'
+                ELSE 'AUTRE'
+            END) AS departement
+        ")
+    )->orderBy('cycle', 'asc')->orderBy('departement', 'asc')->get();
+    return  response()->json($records, JSON_UNESCAPED_UNICODE);
+});
+
