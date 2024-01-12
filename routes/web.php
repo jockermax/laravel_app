@@ -70,20 +70,21 @@ Route::get('get-list-formation/', function () {
     return  response()->json($records, JSON_UNESCAPED_UNICODE);
 });
 
-Route::post('add-formation/{user}/{formation}', function ($user ,$formation) {
-    $formation_validated =  $validate_formations->create($request -> validated());
+Route::post('add-formation/{user}/', function ($user, App\Http\Requests\validateFormation $request) {
+    $validated = $request->validated();
+    $formation_validated = DB::table('validate_formations')->insertGetId($validated);
     if ($formation_validated) {
-        return response()->json(['success'=> true, 'id' => $formation_validated-> id]);
+        return response()->json(['success'=> true, 'id' => $formation_validated]);
     } else {
         return response()->json(['success'=> false]);
     }
 });
 
-Route::delete('delete-formation/{user}/{id}', function ($id, $user) {
-    $deleted_success = $deleted_validate_formations->where(['id' => $id], ['user', $user])->delete();
+Route::delete('delete-formation/{id}/', function ($id) {
+    $deleted_success = DB::table('validate_formations')->where(['id' => $id])->delete();
     if ($deleted_success) {
         return response()->json(['success'=> true]);
     } else {
-        return response()->json(['success'=> false]);
+        return response()->json(['success'=> false, 'etat'=>$deleted_success]);
     }
 });

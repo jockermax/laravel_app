@@ -13,7 +13,7 @@ class validateFormation extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,9 @@ class validateFormation extends FormRequest
     {
         return [
             //
+            'formation' => 'required',
+            'user' => 'required',
+            'created_at' => 'required'
         ];
     }
 }

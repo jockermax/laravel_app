@@ -1,11 +1,11 @@
 const userID = $('#user-data-information').attr("data-userID")
 export function getData() {
-    $('.form-submit').each( function () { 
+    $('.form-submit').each( function () {
         $(this).on('submit', function (e) {
             e.preventDefault();
         });
     });
-    
+
 }
 
 export async function validateUserInformation() {
@@ -21,7 +21,7 @@ export async function validateUserInformation() {
         }
         console.log(data)
        return await submitData(`submit-user-information/${userID}`, data, 'PUT').then(response => console.log(response)).catch(error => console.error(error));
-      
+
     })
 }
 
@@ -38,7 +38,7 @@ export async function submitData(url, data, type) {
         return response
     } catch (error) {
         throw error
-    } 
+    }
 }
 
 export async function submitFeedback(){
@@ -100,7 +100,7 @@ export async function appendFormation(data) {
     const listLink = (accordionID, formationID, nom_formation, cycle, cout_formation, departement) => {
         return $(`#${accordionID}`).append(`<a href="#" class="list-group-item list-group-item-action list-group-item-light formation-list-group" id="formation-${formationID}" data-formationID="${formationID}" data-coutFormation="${cout_formation}" data-nomFormation="${nom_formation}" data-cycle="${cycle}" data-departement="${departement}">${cycle} ${nom_formation}</a>`)
     }
-    
+
    async function appendFormationListGroup(data) {
         const regexLicence = /licence/i;
         const regexMaster = /master/i;
@@ -181,18 +181,18 @@ export async function displaySelectedFormation() {
             const data = {
                 user: userID,
                 formation: formationID,
-                created_at: new Date(),
+                created_at: new Date().toISOString().replace('T', ' ').replace('Z', ''),
             }
             submitData(`add-formation/${userID}/`, data, 'POST').then(async function (response) {
                 console.log(response.id);
                 console.log($(`#formation-${formationID}`).attr('data-formationID'));
                 $(`#formation-${formationID}`).addClass('disabled');
                 $(`#formation-${formationID}`).attr('aria-disabled', true);
-                await appendFormationIntoTable($(`#formation-${formationID}`), response.id); 
+                await appendFormationIntoTable($(`#formation-${formationID}`), response.id);
                 $(`#delete-formation-selected-${formationID}`).on('click', async function () {
                     console.log('deleted');
                     const candidatureID= $(`#delete-formation-selected-${formationID}`).attr('data-candidatureID');
-                    await $.ajax(`delete-formation/${userID}/${response.id}`, {
+                    await $.ajax(`delete-formation/${candidatureID}/`, {
                         type: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -207,9 +207,9 @@ export async function displaySelectedFormation() {
                             console.error(error,textStatus, errorThrown);
                         }
                     })
-                })             
+                })
             })
-            
+
         })
     })
 
